@@ -73,9 +73,13 @@ export const StorySectionAiVision: React.FC = () => {
             {/* Image Preview */}
             <div className="relative h-72 sm:h-80 w-full overflow-hidden">
               <img
-                src="https://images.unsplash.com/photo-1515162816999-a0c47dc192f7?auto=format&fit=crop&w=1000&q=80"
+                src="/images/pothole-hazard.jpg"
                 alt="Civic Pothole Hazard"
                 className="w-full h-full object-cover"
+                onError={(e) => {
+                  (e.currentTarget as HTMLImageElement).src =
+                    'https://images.unsplash.com/photo-1515162816999-a0c47dc192f7?auto=format&fit=crop&w=1000&q=80';
+                }}
               />
 
               {/* Laser Scan line during simulation */}

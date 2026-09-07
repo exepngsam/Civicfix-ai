@@ -158,22 +158,30 @@ export const StorySectionResolution: React.FC = () => {
           <div className="grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-8 items-center">
             {/* Visual Images: Before vs After */}
             <div className="md:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-              <div className="rounded-2xl overflow-hidden border border-rose-500/40 relative group">
+              <div className="rounded-2xl overflow-hidden border border-rose-500/40 relative group bg-slate-900">
                 <img
-                  src="https://images.unsplash.com/photo-1515162816999-a0c47dc192f7?auto=format&fit=crop&w=600&q=80"
+                  src="/images/pothole-hazard.jpg"
                   alt="Hazard Reported"
                   className="w-full h-36 sm:h-44 object-cover"
+                  onError={(e) => {
+                    (e.currentTarget as HTMLImageElement).src =
+                      'https://images.unsplash.com/photo-1515162816999-a0c47dc192f7?auto=format&fit=crop&w=600&q=80';
+                  }}
                 />
                 <span className="absolute bottom-2 left-2 px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-rose-950/90 text-rose-300 border border-rose-500/50">
                   BEFORE: ASPHALT CAVITY
                 </span>
               </div>
 
-              <div className="rounded-2xl overflow-hidden border border-emerald-500/40 relative group">
+              <div className="rounded-2xl overflow-hidden border border-emerald-500/40 relative group bg-slate-900">
                 <img
-                  src="https://images.unsplash.com/photo-1541888946425-d0fbb18086f6?auto=format&fit=crop&w=600&q=80"
+                  src="/images/asphalt-repaired.jpg"
                   alt="Hazard Repaired"
                   className="w-full h-36 sm:h-44 object-cover"
+                  onError={(e) => {
+                    (e.currentTarget as HTMLImageElement).src =
+                      'https://images.unsplash.com/photo-1545459720-aac8509eb02c?auto=format&fit=crop&w=600&q=80';
+                  }}
                 />
                 <span className="absolute bottom-2 left-2 px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-950/90 text-emerald-300 border border-emerald-500/50">
                   AFTER: SEALED & RESTORED
