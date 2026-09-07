@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { Cpu, CheckCircle2, ShieldCheck, ArrowRight, Sparkles, RefreshCw, Zap } from 'lucide-react';
+import potholeHazardImg from '@/assets/images/pothole-hazard.jpg';
 
 export const StorySectionAiVision: React.FC = () => {
   const [activeStep, setActiveStep] = useState<number>(0);
@@ -36,7 +37,7 @@ export const StorySectionAiVision: React.FC = () => {
   }, []);
 
   return (
-    <section id="ai-intelligence" className="py-24 relative border-t border-slate-800/80 bg-slate-950/80 overflow-hidden">
+    <section id="ai-intelligence" className="py-24 relative border-t border-slate-800/80 bg-slate-950/80 overflow-hidden scroll-mt-20">
       <div className="absolute top-0 right-1/4 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-cyan-600/10 rounded-full blur-3xl pointer-events-none" />
 
@@ -69,43 +70,55 @@ export const StorySectionAiVision: React.FC = () => {
         {/* Live Complaint Card Simulation */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
           {/* Visual Evidence Card with Scan Overlay */}
-          <div className="lg:col-span-5 relative rounded-3xl overflow-hidden border border-slate-800 bg-slate-900 shadow-2xl flex flex-col justify-between">
-            {/* Image Preview */}
-            <div className="relative h-72 sm:h-80 w-full overflow-hidden">
+          <div className="lg:col-span-5 relative rounded-3xl overflow-hidden border border-slate-800 bg-slate-900 shadow-2xl flex flex-col justify-between h-full">
+            {/* Image Preview with Absolute Fill */}
+            <div className="relative flex-1 min-h-[360px] sm:min-h-[420px] w-full overflow-hidden bg-slate-950">
               <img
-                src="/images/pothole-hazard.jpg"
+                src={potholeHazardImg}
                 alt="Civic Pothole Hazard"
-                className="w-full h-full object-cover"
+                className="absolute inset-0 w-full h-full object-cover"
                 onError={(e) => {
                   (e.currentTarget as HTMLImageElement).src =
-                    'https://images.unsplash.com/photo-1515162816999-a0c47dc192f7?auto=format&fit=crop&w=1000&q=80';
+                    '/images/pothole-hazard.jpg';
                 }}
               />
 
+              {/* Gradient Scrim for Legibility */}
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-transparent to-black/40 pointer-events-none" />
+
+              {/* High-tech Corner Target Reticles */}
+              <div className="absolute top-3 left-3 w-3 h-3 border-t-2 border-l-2 border-civic-cyan pointer-events-none" />
+              <div className="absolute top-3 right-3 w-3 h-3 border-t-2 border-r-2 border-civic-cyan pointer-events-none" />
+              <div className="absolute bottom-3 left-3 w-3 h-3 border-b-2 border-l-2 border-civic-cyan pointer-events-none" />
+              <div className="absolute bottom-3 right-3 w-3 h-3 border-b-2 border-r-2 border-civic-cyan pointer-events-none" />
+
               {/* Laser Scan line during simulation */}
               {isSimulating && (
-                <div className="absolute inset-x-0 h-1 bg-gradient-to-r from-transparent via-civic-cyan to-transparent shadow-glowCyan animate-scan pointer-events-none" />
+                <div className="absolute inset-x-0 h-1 bg-gradient-to-r from-transparent via-civic-cyan to-transparent shadow-glowCyan animate-scan pointer-events-none z-10" />
               )}
 
               {/* Bounding Box Simulation */}
-              <div className="absolute top-[32%] left-[28%] w-[45%] h-[42%] border-2 border-rose-500/90 rounded-lg shadow-glowCritical flex flex-col justify-between p-1.5 pointer-events-none">
-                <span className="text-[10px] font-mono font-bold bg-rose-950/90 text-rose-300 px-1.5 py-0.5 rounded self-start border border-rose-500/50">
-                  Target: Asphalt Cavity (98.4%)
-                </span>
-                <span className="text-[9px] font-mono text-slate-300 self-end bg-black/70 px-1 rounded">
+              <div className="absolute top-[28%] left-[24%] w-[52%] h-[44%] border-2 border-rose-500 rounded-xl shadow-glowCritical flex flex-col justify-between p-2 pointer-events-none bg-rose-500/10 backdrop-blur-[1px] z-10">
+                <div className="flex items-center gap-1.5 self-start">
+                  <span className="w-2 h-2 rounded-full bg-rose-400 animate-ping" />
+                  <span className="text-[10px] font-mono font-bold bg-rose-950/90 text-rose-200 px-2 py-0.5 rounded border border-rose-500/60 shadow-lg">
+                    Target: Asphalt Cavity (98.4%)
+                  </span>
+                </div>
+                <span className="text-[9px] font-mono text-slate-300 self-end bg-black/80 px-2 py-0.5 rounded border border-slate-700">
                   BoundingBox [0.32, 0.28, 0.74, 0.73]
                 </span>
               </div>
 
               {/* Bedrock Badge */}
-              <div className="absolute top-3 left-3 bg-slate-950/85 backdrop-blur-md px-3 py-1 rounded-full border border-purple-500/50 text-[11px] font-mono text-purple-300 flex items-center gap-1.5 shadow-lg">
-                <Sparkles className="w-3 h-3 text-purple-400" />
+              <div className="absolute top-4 left-4 bg-slate-950/90 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-purple-500/50 text-xs font-mono text-purple-200 flex items-center gap-2 shadow-xl z-10">
+                <Sparkles className="w-3.5 h-3.5 text-purple-400" />
                 <span>Bedrock Claude 3.5 Sonnet Vision</span>
               </div>
             </div>
 
             {/* Evidence Metadata bar */}
-            <div className="p-5 border-t border-slate-800 bg-slate-950/80">
+            <div className="p-5 border-t border-slate-800 bg-slate-950/95 shrink-0 z-10">
               <div className="flex items-center justify-between text-xs font-mono text-slate-400">
                 <span>EVIDENCE INTEGRITY</span>
                 <span className="text-emerald-400 flex items-center gap-1 font-semibold">

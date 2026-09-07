@@ -88,7 +88,7 @@ export const StorySectionWorkflow: React.FC = () => {
   }, [nodes.length]);
 
   return (
-    <section id="workflow" className="py-24 relative border-t border-slate-800/80 bg-civic-dark/90">
+    <section id="workflow" className="py-24 relative border-t border-slate-800/80 bg-civic-dark/90 scroll-mt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-16">

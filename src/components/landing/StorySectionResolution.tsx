@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { CheckCircle2, Clock, ShieldCheck, UserCheck, Cpu, ArrowRight, Sparkles, RefreshCw } from 'lucide-react';
+import potholeHazardImg from '@/assets/images/pothole-hazard.jpg';
+import asphaltRepairedImg from '@/assets/images/asphalt-repaired.jpg';
 
 export const StorySectionResolution: React.FC = () => {
   const [currentStage, setCurrentStage] = useState<number>(4); // Default to RESOLVED to show end state
@@ -70,7 +72,7 @@ export const StorySectionResolution: React.FC = () => {
   };
 
   return (
-    <section id="resolution" className="py-24 relative border-t border-slate-800/80 bg-civic-dark/95">
+    <section id="resolution" className="py-24 relative border-t border-slate-800/80 bg-civic-dark/95 scroll-mt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16">
@@ -160,12 +162,12 @@ export const StorySectionResolution: React.FC = () => {
             <div className="md:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
               <div className="rounded-2xl overflow-hidden border border-rose-500/40 relative group bg-slate-900">
                 <img
-                  src="/images/pothole-hazard.jpg"
+                  src={potholeHazardImg}
                   alt="Hazard Reported"
                   className="w-full h-36 sm:h-44 object-cover"
                   onError={(e) => {
                     (e.currentTarget as HTMLImageElement).src =
-                      'https://images.unsplash.com/photo-1515162816999-a0c47dc192f7?auto=format&fit=crop&w=600&q=80';
+                      '/images/pothole-hazard.jpg';
                   }}
                 />
                 <span className="absolute bottom-2 left-2 px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-rose-950/90 text-rose-300 border border-rose-500/50">
@@ -175,12 +177,12 @@ export const StorySectionResolution: React.FC = () => {
 
               <div className="rounded-2xl overflow-hidden border border-emerald-500/40 relative group bg-slate-900">
                 <img
-                  src="/images/asphalt-repaired.jpg"
+                  src={asphaltRepairedImg}
                   alt="Hazard Repaired"
                   className="w-full h-36 sm:h-44 object-cover"
                   onError={(e) => {
                     (e.currentTarget as HTMLImageElement).src =
-                      'https://images.unsplash.com/photo-1545459720-aac8509eb02c?auto=format&fit=crop&w=600&q=80';
+                      '/images/asphalt-repaired.jpg';
                   }}
                 />
                 <span className="absolute bottom-2 left-2 px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-950/90 text-emerald-300 border border-emerald-500/50">

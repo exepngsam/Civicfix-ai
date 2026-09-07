@@ -13,6 +13,10 @@
     --color-civic-bedrock: #a855f7;
   }
 
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
     background-color: #050811;
     color: #f1f5f9;
