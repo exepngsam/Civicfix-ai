@@ -1,0 +1,247 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  CIVICFIX AI - Serverless Municipal Intelligence Backend
+  AWS Hackathon Architecture featuring Amazon Bedrock, S3, DynamoDB, OpenSearch, EventBridge & Step Functions.
+
+Globals:
+  Function:
+    Timeout: 30
+    MemorySize: 512
+    Runtime: nodejs20.x
+    Architectures:
+      - arm64
+    Environment:
+      Variables:
+        REPORTS_TABLE: !Ref CivicReportsTable
+        EVIDENCE_BUCKET: !Ref EvidenceBucket
+        EVENT_BUS_NAME: !Ref CivicEventBus
+        BEDROCK_MODEL_ID: 'anthropic.claude-3-5-sonnet-20241022-v2:0'
+        POWERTOOLS_SERVICE_NAME: CivicFixAI
+
+Resources:
+  # ========================================================
+  # HTTP API Gateway
+  # ========================================================
+  CivicHttpApi:
+    Type: AWS::Serverless::HttpApi
+    Properties:
+      CorsConfiguration:
+        AllowMethods:
+          - GET
+          - POST
+          - PATCH
+          - OPTIONS
+        AllowHeaders:
+          - Content-Type
+          - Authorization
+          - X-Amz-Date
+        AllowOrigins:
+          - '*'
+
+  # ========================================================
+  # DynamoDB Storage for Civic Reports
+  # ========================================================
+  CivicReportsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: CivicFixReports
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+        - AttributeName: status
+          AttributeType: S
+        - AttributeName: department
+          AttributeType: S
+        - AttributeName: createdAt
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      GlobalSecondaryIndexes:
+        - IndexName: StatusCreatedAtIndex
+          KeySchema:
+            - AttributeName: status
+              KeyType: HASH
+            - AttributeName: createdAt
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+        - IndexName: DepartmentCreatedAtIndex
+          KeySchema:
+            - AttributeName: department
+              KeyType: HASH
+            - AttributeName: createdAt
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: true
+
+  # ========================================================
+  # S3 Evidence Bucket
+  # ========================================================
+  EvidenceBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub 'civicfix-evidence-${AWS::AccountId}-${AWS::Region}'
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      CorsConfiguration:
+        CorsRules:
+          - AllowedHeaders:
+              - '*'
+            AllowedMethods:
+              - GET
+              - PUT
+              - POST
+            AllowedOrigins:
+              - '*'
+            MaxAge: 3000
+
+  # ========================================================
+  # Amazon EventBridge Custom Event Bus
+  # ========================================================
+  CivicEventBus:
+    Type: AWS::Events::EventBus
+    Properties:
+      Name: CivicFixEvents
+
+  # ========================================================
+  # Lambda Handlers: Reports CRUD
+  # ========================================================
+  ReportsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./src/handlers/
+      Handler: reports.handler
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref CivicReportsTable
+        - S3CrudPolicy:
+            BucketName: !Ref EvidenceBucket
+        - EventBridgePutEventsPolicy:
+            EventBusName: !Ref CivicEventBus
+      Events:
+        GetReports:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref CivicHttpApi
+            Path: /reports
+            Method: GET
+        CreateReport:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref CivicHttpApi
+            Path: /reports
+            Method: POST
+        GetReportById:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref CivicHttpApi
+            Path: /reports/{id}
+            Method: GET
+        UpdateReport:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref CivicHttpApi
+            Path: /reports/{id}
+            Method: PATCH
+
+  # ========================================================
+  # Lambda Handlers: Amazon Bedrock Multimodal Inference
+  # ========================================================
+  BedrockAnalysisFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./src/handlers/
+      Handler: aiAnalysis.handler
+      Timeout: 60
+      Policies:
+        - Statement:
+            - Effect: Allow
+              Action:
+                - bedrock:InvokeModel
+              Resource:
+                - !Sub 'arn:aws:bedrock:${AWS::Region}::foundation-model/anthropic.claude-3-5-sonnet-20241022-v2:0'
+                - !Sub 'arn:aws:bedrock:${AWS::Region}::foundation-model/amazon.titan-embed-text-v2:0'
+        - S3ReadPolicy:
+            BucketName: !Ref EvidenceBucket
+      Events:
+        AnalyzeEvidence:
+          Type: HttpApi
+          Properties:
+            ApiId: !Ref CivicHttpApi
+            Path: /reports/analyze
+            Method: POST
+
+  # ========================================================
+  # AWS Step Functions State Machine
+  # ========================================================
+  ResolutionStateMachine:
+    Type: AWS::Serverless::StateMachine
+    Properties:
+      Name: CivicFixResolutionFlow
+      DefinitionUri: ./src/handlers/stepFunctionsWorkflow.json
+      DefinitionSubstitutions:
+        BedrockAnalysisFunctionArn: !GetAtt BedrockAnalysisFunction.Arn
+        ReportsFunctionArn: !GetAtt ReportsFunction.Arn
+        EventBusName: !Ref CivicEventBus
+      Policies:
+        - LambdaInvokePolicy:
+            FunctionName: !Ref BedrockAnalysisFunction
+        - LambdaInvokePolicy:
+            FunctionName: !Ref ReportsFunction
+        - EventBridgePutEventsPolicy:
+            EventBusName: !Ref CivicEventBus
+
+  # ========================================================
+  # Amazon Cognito User Pool
+  # ========================================================
+  CivicUserPool:
+    Type: AWS::Cognito::UserPool
+    Properties:
+      UserPoolName: CivicFixCitizens
+      AutoVerifiedAttributes:
+        - email
+      UsernameAttributes:
+        - email
+
+  CivicUserPoolClient:
+    Type: AWS::Cognito::UserPoolClient
+    Properties:
+      ClientName: CivicFixWebClient
+      UserPoolId: !Ref CivicUserPool
+      GenerateSecret: false
+      ExplicitAuthFlows:
+        - ALLOW_USER_SRP_AUTH
+        - ALLOW_REFRESH_TOKEN_AUTH
+        - ALLOW_USER_PASSWORD_AUTH
+
+Outputs:
+  HttpApiUrl:
+    Description: HTTP API Gateway Base URL
+    Value: !Sub 'https://${CivicHttpApi}.execute-api.${AWS::Region}.amazonaws.com'
+  ReportsTableName:
+    Description: DynamoDB Table Name
+    Value: !Ref CivicReportsTable
+  EvidenceBucketName:
+    Description: S3 Evidence Bucket Name
+    Value: !Ref EvidenceBucket
+  EventBusName:
+    Description: EventBridge Custom Event Bus
+    Value: !Ref CivicEventBus
+  CognitoUserPoolId:
+    Description: Cognito User Pool ID
+    Value: !Ref CivicUserPool
+  CognitoClientId:
+    Description: Cognito App Client ID
+    Value: !Ref CivicUserPoolClient

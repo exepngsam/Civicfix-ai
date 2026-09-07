@@ -1,0 +1,73 @@
+{
+  "Comment": "CivicFix AI - Automated Municipal Incident Resolution State Machine",
+  "StartAt": "ValidateReportPayload",
+  "States": {
+    "ValidateReportPayload": {
+      "Type": "Pass",
+      "Comment": "Validates incoming citizen schema and geo-coordinates",
+      "Next": "ArchiveEvidenceToS3"
+    },
+    "ArchiveEvidenceToS3": {
+      "Type": "Pass",
+      "Comment": "Ensures photographic evidence is persisted in Amazon S3 with SHA-256 fingerprint",
+      "Next": "InvokeBedrockAnalysis"
+    },
+    "InvokeBedrockAnalysis": {
+      "Type": "Task",
+      "Resource": "${BedrockAnalysisFunctionArn}",
+      "Comment": "Executes Amazon Bedrock Claude 3.5 Sonnet multimodal inference",
+      "Retry": [
+        {
+          "ErrorEquals": ["States.ALL"],
+          "IntervalSeconds": 2,
+          "MaxAttempts": 2,
+          "BackoffRate": 2.0
+        }
+      ],
+      "ResultPath": "$.aiAnalysis",
+      "Next": "CheckOpenSearchDuplicates"
+    },
+    "CheckOpenSearchDuplicates": {
+      "Type": "Pass",
+      "Comment": "Performs k-NN vector cosine similarity check to detect existing nearby reports",
+      "Next": "EvaluateSeverityThreshold"
+    },
+    "EvaluateSeverityThreshold": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.aiAnalysis.severityScore",
+          "NumericGreaterThanEquals": 85,
+          "Next": "RouteCriticalEmergencyQueue"
+        }
+      ],
+      "Default": "RouteStandardMaintenanceQueue"
+    },
+    "RouteCriticalEmergencyQueue": {
+      "Type": "Pass",
+      "Comment": "Assigns urgent 2-hour field inspection SLA and flags high-priority dispatch",
+      "Next": "IndexInDynamoDB"
+    },
+    "RouteStandardMaintenanceQueue": {
+      "Type": "Pass",
+      "Comment": "Enqueues within standard 48-hour municipal operating queue",
+      "Next": "IndexInDynamoDB"
+    },
+    "IndexInDynamoDB": {
+      "Type": "Task",
+      "Resource": "${ReportsFunctionArn}",
+      "Comment": "Stores full immutable record in Amazon DynamoDB",
+      "Next": "PublishEventBridgeNotification"
+    },
+    "PublishEventBridgeNotification": {
+      "Type": "Pass",
+      "Comment": "Broadcasts CivicFix.ReportCreated event to city operations center",
+      "Next": "DispatchWorkOrder"
+    },
+    "DispatchWorkOrder": {
+      "Type": "Pass",
+      "Comment": "Resolution state machine complete. Awaiting post-repair photographic verification.",
+      "End": true
+    }
+  }
+}
