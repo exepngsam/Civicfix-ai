@@ -36,14 +36,14 @@ export const ReportDetailModal: React.FC<ReportDetailModalProps> = ({
   return (
     <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex justify-end">
       <div
-        className="w-full max-w-2xl bg-slate-950 border-l border-slate-800 h-full overflow-y-auto flex flex-col justify-between shadow-2xl animate-slide-left"
+        className="w-full sm:max-w-2xl bg-slate-950 border-l border-slate-800 h-full overflow-y-auto flex flex-col justify-between shadow-2xl animate-slide-left"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
         <div>
-          <div className="p-6 border-b border-slate-800 flex items-center justify-between sticky top-0 bg-slate-950/90 backdrop-blur-md z-20">
-            <div className="flex items-center gap-3">
-              <span className="text-sm font-mono font-bold text-civic-cyan bg-cyan-500/10 px-2.5 py-1 rounded-lg border border-cyan-500/30">
+          <div className="p-4 sm:p-6 border-b border-slate-800 flex items-center justify-between sticky top-0 bg-slate-950/90 backdrop-blur-md z-20">
+            <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
+              <span className="text-xs sm:text-sm font-mono font-bold text-civic-cyan bg-cyan-500/10 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-lg border border-cyan-500/30">
                 {report.id}
               </span>
               <SeverityBadge severity={report.severity} score={report.severityScore} size="sm" />
@@ -52,13 +52,13 @@ export const ReportDetailModal: React.FC<ReportDetailModalProps> = ({
 
             <button
               onClick={onClose}
-              className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-900 transition-colors"
+              className="p-1.5 sm:p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-900 transition-colors"
             >
               <X className="w-5 h-5" />
             </button>
           </div>
 
-          <div className="p-6 space-y-6">
+          <div className="p-4 sm:p-6 space-y-6">
             {/* Title & Reporter */}
             <div>
               <h2 className="text-xl font-bold font-mono text-white leading-tight">

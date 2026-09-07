@@ -108,30 +108,30 @@ export const AwsArchitectureModal: React.FC<AwsArchitectureModalProps> = ({
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="p-6 border-b border-slate-800 flex items-center justify-between bg-slate-950/80 sticky top-0 z-10">
+        <div className="p-4 sm:p-6 border-b border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-slate-950/80 sticky top-0 z-10">
           <div className="flex items-center gap-3">
-            <div className="p-2.5 rounded-xl bg-purple-500/10 border border-purple-500/40 text-purple-400">
+            <div className="p-2 sm:p-2.5 rounded-xl bg-purple-500/10 border border-purple-500/40 text-purple-400 shrink-0">
               <Server className="w-5 h-5" />
             </div>
             <div>
-              <div className="flex items-center gap-2">
-                <h3 className="text-base font-bold font-mono text-white">
-                  AWS CLOUD ARCHITECTURE & TELEMETRY
+              <div className="flex items-center gap-2 flex-wrap">
+                <h3 className="text-sm sm:text-base font-bold font-mono text-white">
+                  AWS CLOUD ARCHITECTURE
                 </h3>
                 <span className="px-2 py-0.5 rounded text-[10px] font-mono bg-purple-950/80 text-purple-300 border border-purple-500/40">
                   REGION: {APP_CONFIG.awsRegion}
                 </span>
               </div>
-              <p className="text-xs font-mono text-slate-400">
+              <p className="text-[11px] sm:text-xs font-mono text-slate-400">
                 Verified Serverless Infrastructure for Hackathon Judging
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center justify-between sm:justify-end gap-2 sm:gap-3 w-full sm:w-auto">
             <button
               onClick={onToggleMode}
-              className={`px-3 py-1.5 rounded-xl border text-xs font-mono font-bold transition-all ${
+              className={`flex-1 sm:flex-none px-3 py-1.5 rounded-xl border text-[11px] sm:text-xs font-mono font-bold transition-all text-center ${
                 appMode === 'REAL_AWS'
                   ? 'bg-purple-950 border-purple-500 text-purple-300 shadow-glowBedrock'
                   : 'bg-cyan-950 border-cyan-500 text-cyan-300 shadow-glowCyan'
@@ -142,7 +142,8 @@ export const AwsArchitectureModal: React.FC<AwsArchitectureModalProps> = ({
 
             <button
               onClick={onClose}
-              className="text-slate-400 hover:text-white p-1 rounded-lg"
+              className="text-slate-400 hover:text-white p-1.5 rounded-lg border border-slate-800 sm:border-transparent shrink-0"
+              aria-label="Close Architecture Modal"
             >
               <X className="w-5 h-5" />
             </button>
@@ -150,7 +151,7 @@ export const AwsArchitectureModal: React.FC<AwsArchitectureModalProps> = ({
         </div>
 
         {/* Content Body */}
-        <div className="p-6 overflow-y-auto space-y-8 flex-1">
+        <div className="p-4 sm:p-6 overflow-y-auto space-y-6 sm:space-y-8 flex-1">
           {/* Active Services Grid */}
           <div>
             <h4 className="text-xs font-mono text-slate-400 uppercase tracking-wider mb-3">
@@ -239,7 +240,7 @@ export const AwsArchitectureModal: React.FC<AwsArchitectureModalProps> = ({
         </div>
 
         {/* Footer */}
-        <div className="p-4 border-t border-slate-800 bg-slate-950/90 flex items-center justify-between text-xs font-mono text-slate-400">
+        <div className="p-3 sm:p-4 border-t border-slate-800 bg-slate-950/90 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-1 text-[11px] sm:text-xs font-mono text-slate-400">
           <span>Infrastructure as Code: AWS SAM template.yaml ready</span>
           <span className="text-emerald-400 font-bold">100% Serverless Architecture</span>
         </div>

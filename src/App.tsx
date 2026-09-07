@@ -71,6 +71,7 @@ const AppContent: React.FC = () => {
   const [isAwsModalOpen, setIsAwsModalOpen] = useState<boolean>(false);
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState<boolean>(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(false);
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState<boolean>(false);
 
   // Toggle Mode Handler
   const handleToggleMode = () => {
@@ -213,6 +214,8 @@ const AppContent: React.FC = () => {
             user={user}
             onSignOut={() => setIsAuthModalOpen(true)}
             onBackToLanding={() => setCurrentScreen('landing')}
+            isMobileOpen={isMobileSidebarOpen}
+            onCloseMobile={() => setIsMobileSidebarOpen(false)}
           />
 
           {/* Main Area */}
@@ -222,11 +225,12 @@ const AppContent: React.FC = () => {
               onOpenCommandPalette={() => setIsCommandPaletteOpen(true)}
               onOpenAwsModal={() => setIsAwsModalOpen(true)}
               onBackToLanding={() => setCurrentScreen('landing')}
+              onToggleMobileSidebar={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)}
               appMode={appMode}
               eventCount={telemetryEvents.length}
             />
 
-            <main className="p-6 md:p-8 flex-1 max-w-7xl w-full mx-auto">
+            <main className="p-4 sm:p-6 md:p-8 flex-1 max-w-7xl w-full mx-auto">
               {dashboardView === 'overview' && (
                 <OverviewView
                   reports={reports}

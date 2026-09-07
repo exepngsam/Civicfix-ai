@@ -151,7 +151,7 @@ export const StorySectionAiVision: React.FC = () => {
             </div>
 
             {/* Revealed Structured Results Card */}
-            <GlassCard glow="bedrock" className="p-6 relative overflow-hidden">
+            <GlassCard glow="bedrock" className="p-4 sm:p-6 relative overflow-hidden">
               <div className="flex items-center justify-between pb-4 border-b border-slate-800">
                 <div className="flex items-center gap-2">
                   <span className="text-xs font-mono text-purple-400 uppercase tracking-widest">

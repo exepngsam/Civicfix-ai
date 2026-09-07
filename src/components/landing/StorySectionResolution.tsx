@@ -90,7 +90,7 @@ export const StorySectionResolution: React.FC = () => {
           <button
             onClick={playSequence}
             disabled={isPlaying}
-            className="mt-6 md:mt-0 flex items-center gap-2 px-5 py-3 rounded-2xl bg-emerald-950/80 hover:bg-emerald-900 border border-emerald-500/50 text-emerald-300 font-mono text-xs uppercase tracking-wider transition-all duration-300 shadow-glowEmerald disabled:opacity-50"
+            className="mt-6 md:mt-0 w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-3 rounded-2xl bg-emerald-950/80 hover:bg-emerald-900 border border-emerald-500/50 text-emerald-300 font-mono text-xs uppercase tracking-wider transition-all duration-300 shadow-glowEmerald disabled:opacity-50 text-center"
           >
             <RefreshCw className={`w-4 h-4 ${isPlaying ? 'animate-spin' : ''}`} />
             <span>REPLAY LIFECYCLE PROGRESSION</span>
@@ -108,7 +108,7 @@ export const StorySectionResolution: React.FC = () => {
           </div>
 
           {/* Stepper Nodes */}
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-6 relative z-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 sm:gap-6 relative z-10">
             {stages.map((stg, index) => {
               const isPast = currentStage > index;
               const isCurrent = currentStage === index;
@@ -118,7 +118,7 @@ export const StorySectionResolution: React.FC = () => {
                 <div
                   key={stg.id}
                   onClick={() => setCurrentStage(index)}
-                  className={`cursor-pointer rounded-2xl p-5 border transition-all duration-300 ${
+                  className={`cursor-pointer rounded-2xl p-4 sm:p-5 border transition-all duration-300 ${
                     isCurrent
                       ? 'bg-slate-900 border-emerald-400 shadow-glowEmerald scale-105 z-20'
                       : isPast
@@ -154,15 +154,15 @@ export const StorySectionResolution: React.FC = () => {
         </div>
 
         {/* Detailed Before / After Visual Proof Card */}
-        <GlassCard glow="emerald" className="p-8">
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 items-center">
+        <GlassCard glow="emerald" className="p-4 sm:p-8">
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-6 sm:gap-8 items-center">
             {/* Visual Images: Before vs After */}
-            <div className="md:col-span-7 grid grid-cols-2 gap-4">
+            <div className="md:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
               <div className="rounded-2xl overflow-hidden border border-rose-500/40 relative group">
                 <img
                   src="https://images.unsplash.com/photo-1515162816999-a0c47dc192f7?auto=format&fit=crop&w=600&q=80"
                   alt="Hazard Reported"
-                  className="w-full h-44 object-cover"
+                  className="w-full h-36 sm:h-44 object-cover"
                 />
                 <span className="absolute bottom-2 left-2 px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-rose-950/90 text-rose-300 border border-rose-500/50">
                   BEFORE: ASPHALT CAVITY
@@ -173,7 +173,7 @@ export const StorySectionResolution: React.FC = () => {
                 <img
                   src="https://images.unsplash.com/photo-1541888946425-d0fbb18086f6?auto=format&fit=crop&w=600&q=80"
                   alt="Hazard Repaired"
-                  className="w-full h-44 object-cover"
+                  className="w-full h-36 sm:h-44 object-cover"
                 />
                 <span className="absolute bottom-2 left-2 px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-950/90 text-emerald-300 border border-emerald-500/50">
                   AFTER: SEALED & RESTORED

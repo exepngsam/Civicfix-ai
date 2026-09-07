@@ -8,11 +8,8 @@ import {
   BarChart3,
   ShieldCheck,
   Server,
-  Settings,
   LogOut,
-  Sparkles,
-  Radio,
-  ExternalLink,
+  X,
 } from 'lucide-react';
 import { AppMode, UserSession } from '@/types';
 
@@ -25,6 +22,8 @@ interface SidebarProps {
   user: UserSession;
   onSignOut: () => void;
   onBackToLanding: () => void;
+  isMobileOpen?: boolean;
+  onCloseMobile?: () => void;
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
@@ -36,6 +35,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
   user,
   onSignOut,
   onBackToLanding,
+  isMobileOpen = false,
+  onCloseMobile,
 }) => {
   const menuItems = [
     { id: 'overview', label: 'Overview', icon: LayoutDashboard },
@@ -47,13 +48,24 @@ export const Sidebar: React.FC<SidebarProps> = ({
     { id: 'evidence', label: 'Evidence', icon: ShieldCheck },
   ];
 
-  return (
-    <aside className="w-64 bg-slate-950 border-r border-slate-800/80 flex flex-col justify-between h-screen sticky top-0 shrink-0 select-none z-30">
+  const handleSelect = (id: string) => {
+    onSelectView(id);
+    onCloseMobile?.();
+  };
+
+  const sidebarContent = (
+    <aside className="w-64 bg-slate-950 border-r border-slate-800/80 flex flex-col justify-between h-full select-none">
       {/* Top Header */}
       <div>
         {/* Brand Header */}
-        <div className="p-5 border-b border-slate-800/80 flex items-center justify-between">
-          <div className="flex items-center gap-3 cursor-pointer" onClick={onBackToLanding}>
+        <div className="p-4 sm:p-5 border-b border-slate-800/80 flex items-center justify-between">
+          <div
+            className="flex items-center gap-3 cursor-pointer"
+            onClick={() => {
+              onBackToLanding();
+              onCloseMobile?.();
+            }}
+          >
             <div className="relative flex items-center justify-center w-9 h-9 rounded-xl bg-gradient-to-br from-cyan-500/20 to-orange-500/20 border border-cyan-500/40 shadow-glowCyan">
               <svg
                 className="w-4 h-4 text-civic-cyan"
@@ -78,6 +90,16 @@ export const Sidebar: React.FC<SidebarProps> = ({
               <p className="text-[9px] font-mono text-slate-400">COMMAND CENTER</p>
             </div>
           </div>
+
+          {/* Close button for mobile */}
+          {onCloseMobile && (
+            <button
+              onClick={onCloseMobile}
+              className="md:hidden p-1.5 rounded-lg text-slate-400 hover:text-white"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          )}
         </div>
 
         {/* Navigation Menu */}
@@ -89,7 +111,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             return (
               <button
                 key={item.id}
-                onClick={() => onSelectView(item.id)}
+                onClick={() => handleSelect(item.id)}
                 className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-mono transition-all group ${
                   isActive
                     ? 'bg-cyan-500/10 text-civic-cyan border border-cyan-500/30 shadow-glowCyan font-bold'
@@ -123,7 +145,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
       <div className="p-4 border-t border-slate-800/80 space-y-3">
         {/* AWS Architecture & Mode Pill */}
         <div
-          onClick={onOpenAwsModal}
+          onClick={() => {
+            onOpenAwsModal();
+            onCloseMobile?.();
+          }}
           className="p-3 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-slate-700 cursor-pointer transition-all"
         >
           <div className="flex items-center justify-between text-xs font-mono">
@@ -170,7 +195,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </div>
 
           <button
-            onClick={onSignOut}
+            onClick={() => {
+              onSignOut();
+              onCloseMobile?.();
+            }}
             title="Sign out / Switch account"
             className="p-1.5 rounded-lg text-slate-400 hover:text-rose-400 hover:bg-slate-900 transition-colors"
           >
@@ -179,5 +207,29 @@ export const Sidebar: React.FC<SidebarProps> = ({
         </div>
       </div>
     </aside>
+  );
+
+  return (
+    <>
+      {/* Desktop Static Sidebar */}
+      <div className="hidden md:flex h-screen sticky top-0 shrink-0 z-30">
+        {sidebarContent}
+      </div>
+
+      {/* Mobile Overlay Drawer */}
+      {isMobileOpen && (
+        <div className="md:hidden fixed inset-0 z-50 flex">
+          {/* Backdrop */}
+          <div
+            className="fixed inset-0 bg-black/80 backdrop-blur-sm animate-fade-in"
+            onClick={onCloseMobile}
+          />
+          {/* Drawer content */}
+          <div className="relative z-10 animate-slide-right h-full shadow-2xl">
+            {sidebarContent}
+          </div>
+        </div>
+      )}
+    </>
   );
 };

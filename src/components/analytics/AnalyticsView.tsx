@@ -99,7 +99,7 @@ export const AnalyticsView: React.FC = () => {
               </div>
 
               {/* Animated Bar Chart */}
-              <div className="mt-8 h-60 flex items-end justify-between gap-4 px-2">
+              <div className="mt-8 h-60 flex items-end justify-between gap-1.5 sm:gap-4 px-1 sm:px-2">
                 {timeline.map((item) => (
                   <div key={item.day} className="flex-1 flex flex-col items-center gap-2 h-full justify-end">
                     <div className="w-full flex items-end justify-center gap-1.5 h-48">

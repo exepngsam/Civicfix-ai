@@ -115,7 +115,7 @@ export const StorySectionWorkflow: React.FC = () => {
           </div>
 
           {/* Node Grid */}
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4 relative z-10">
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-2.5 sm:gap-4 relative z-10">
             {nodes.map((node, index) => {
               const isActive = activeNode === index;
               const isPast = activeNode > index;
@@ -125,9 +125,9 @@ export const StorySectionWorkflow: React.FC = () => {
                 <div
                   key={node.id}
                   onClick={() => setActiveNode(index)}
-                  className={`cursor-pointer rounded-2xl p-4 border transition-all duration-300 flex flex-col items-center text-center ${
+                  className={`cursor-pointer rounded-2xl p-3 sm:p-4 border transition-all duration-300 flex flex-col items-center text-center ${
                     isActive
-                      ? 'bg-slate-900 border-white shadow-2xl scale-110 z-20'
+                      ? 'bg-slate-900 border-white shadow-2xl scale-105 sm:scale-110 z-20'
                       : isPast
                       ? 'bg-slate-950/80 border-slate-700 text-slate-300'
                       : 'bg-slate-950/40 border-slate-800/60 text-slate-500 opacity-70 hover:opacity-100'
@@ -138,25 +138,25 @@ export const StorySectionWorkflow: React.FC = () => {
                   }}
                 >
                   <div
-                    className="w-12 h-12 rounded-xl flex items-center justify-center mb-3 border transition-transform duration-300"
+                    className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex items-center justify-center mb-2.5 sm:mb-3 border transition-transform duration-300"
                     style={{
                       backgroundColor: `${node.color}15`,
                       borderColor: `${node.color}40`,
                     }}
                   >
                     <IconComponent
-                      className="w-5 h-5"
+                      className="w-4 h-4 sm:w-5 sm:h-5"
                       style={{ color: node.color }}
                     />
                   </div>
 
-                  <span className="text-[10px] font-mono uppercase text-slate-400 font-bold tracking-wider">
+                  <span className="text-[9px] sm:text-[10px] font-mono uppercase text-slate-400 font-bold tracking-wider">
                     STEP 0{index + 1}
                   </span>
-                  <h4 className="text-xs font-mono font-bold text-white mt-1 line-clamp-1">
+                  <h4 className="text-[11px] sm:text-xs font-mono font-bold text-white mt-1 line-clamp-1">
                     {node.title}
                   </h4>
-                  <span className="text-[9px] font-mono text-slate-400 mt-1 line-clamp-1">
+                  <span className="text-[9px] font-mono text-slate-400 mt-0.5 sm:mt-1 line-clamp-1">
                     {node.service}
                   </span>
 
@@ -174,8 +174,8 @@ export const StorySectionWorkflow: React.FC = () => {
         </div>
 
         {/* Selected Node Deep Dive Inspector */}
-        <div className="mt-12 max-w-3xl mx-auto">
-          <GlassCard className="p-6 border-slate-800/90 shadow-2xl">
+        <div className="mt-10 sm:mt-12 max-w-3xl mx-auto">
+          <GlassCard className="p-4 sm:p-6 border-slate-800/90 shadow-2xl">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-800 gap-2">
               <div className="flex items-center gap-3">
                 <div

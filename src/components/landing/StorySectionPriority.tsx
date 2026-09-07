@@ -49,51 +49,51 @@ export const StorySectionPriority: React.FC = () => {
 
           <button
             onClick={() => setIsSorted(!isSorted)}
-            className="mt-6 md:mt-0 flex items-center gap-2 px-5 py-3 rounded-2xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-white font-mono text-xs uppercase tracking-wider transition-all duration-300 shadow-lg hover:border-civic-orange/50"
+            className="mt-6 md:mt-0 w-full sm:w-auto flex items-center justify-center gap-2 px-5 py-3 rounded-2xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-white font-mono text-xs uppercase tracking-wider transition-all duration-300 shadow-lg hover:border-civic-orange/50 text-center"
           >
-            <ArrowDownUp className="w-4 h-4 text-civic-orange" />
+            <ArrowDownUp className="w-4 h-4 text-civic-orange shrink-0" />
             <span>{isSorted ? 'SHOW UNFILTERED INTAKE CHAOS' : 'EXECUTE AI SEVERITY TRIAGE'}</span>
           </button>
         </div>
 
         {/* Priority Lanes Container */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-          <div className="p-4 rounded-xl bg-rose-950/30 border border-rose-500/30 flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <AlertOctagon className="w-4 h-4 text-rose-400" />
-              <span className="text-xs font-mono font-bold text-rose-300">CRITICAL (85-100)</span>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-4 mb-6">
+          <div className="p-3 sm:p-4 rounded-xl bg-rose-950/30 border border-rose-500/30 flex items-center justify-between">
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <AlertOctagon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-rose-400 shrink-0" />
+              <span className="text-[11px] sm:text-xs font-mono font-bold text-rose-300">CRITICAL</span>
             </div>
-            <span className="text-xs font-mono px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-300">
+            <span className="text-[10px] sm:text-xs font-mono px-1.5 sm:px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-300">
               3 Active
             </span>
           </div>
 
-          <div className="p-4 rounded-xl bg-orange-950/30 border border-orange-500/30 flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <AlertTriangle className="w-4 h-4 text-orange-400" />
-              <span className="text-xs font-mono font-bold text-orange-300">HIGH (70-84)</span>
+          <div className="p-3 sm:p-4 rounded-xl bg-orange-950/30 border border-orange-500/30 flex items-center justify-between">
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <AlertTriangle className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-orange-400 shrink-0" />
+              <span className="text-[11px] sm:text-xs font-mono font-bold text-orange-300">HIGH</span>
             </div>
-            <span className="text-xs font-mono px-2 py-0.5 rounded-full bg-orange-500/20 text-orange-300">
+            <span className="text-[10px] sm:text-xs font-mono px-1.5 sm:px-2 py-0.5 rounded-full bg-orange-500/20 text-orange-300">
               2 Active
             </span>
           </div>
 
-          <div className="p-4 rounded-xl bg-amber-950/30 border border-amber-500/30 flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <AlertCircle className="w-4 h-4 text-amber-400" />
-              <span className="text-xs font-mono font-bold text-amber-300">MEDIUM (50-69)</span>
+          <div className="p-3 sm:p-4 rounded-xl bg-amber-950/30 border border-amber-500/30 flex items-center justify-between">
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <AlertCircle className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-400 shrink-0" />
+              <span className="text-[11px] sm:text-xs font-mono font-bold text-amber-300">MEDIUM</span>
             </div>
-            <span className="text-xs font-mono px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300">
+            <span className="text-[10px] sm:text-xs font-mono px-1.5 sm:px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300">
               2 Active
             </span>
           </div>
 
-          <div className="p-4 rounded-xl bg-slate-900/40 border border-slate-700/50 flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Info className="w-4 h-4 text-slate-400" />
-              <span className="text-xs font-mono font-bold text-slate-300">LOW (0-49)</span>
+          <div className="p-3 sm:p-4 rounded-xl bg-slate-900/40 border border-slate-700/50 flex items-center justify-between">
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <Info className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-slate-400 shrink-0" />
+              <span className="text-[11px] sm:text-xs font-mono font-bold text-slate-300">LOW</span>
             </div>
-            <span className="text-xs font-mono px-2 py-0.5 rounded-full bg-slate-800 text-slate-400">
+            <span className="text-[10px] sm:text-xs font-mono px-1.5 sm:px-2 py-0.5 rounded-full bg-slate-800 text-slate-400">
               2 Active
             </span>
           </div>

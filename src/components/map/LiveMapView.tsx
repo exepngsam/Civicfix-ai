@@ -106,17 +106,17 @@ export const LiveMapView: React.FC<LiveMapViewProps> = ({
   }, [reports, activeFilter]);
 
   return (
-    <div className="relative h-[calc(100vh-8rem)] w-full rounded-3xl overflow-hidden border border-slate-800 bg-slate-950 shadow-2xl">
+    <div className="relative h-[calc(100vh-7rem)] sm:h-[calc(100vh-8rem)] w-full rounded-2xl sm:rounded-3xl overflow-hidden border border-slate-800 bg-slate-950 shadow-2xl">
       {/* Top Filter Floating Bar */}
-      <div className="absolute top-4 left-4 z-[400] flex items-center gap-2 bg-slate-950/85 backdrop-blur-md p-1.5 rounded-2xl border border-slate-800 shadow-xl">
-        <span className="text-[11px] font-mono text-slate-400 px-3 uppercase hidden sm:inline">
+      <div className="absolute top-3 left-3 right-3 sm:right-auto sm:top-4 sm:left-4 z-[400] flex items-center gap-1.5 sm:gap-2 bg-slate-950/90 backdrop-blur-md p-1.5 rounded-2xl border border-slate-800 shadow-xl overflow-x-auto max-w-[calc(100%-1.5rem)] sm:max-w-none">
+        <span className="text-[10px] sm:text-[11px] font-mono text-slate-400 px-2 sm:px-3 uppercase shrink-0 hidden xs:inline">
           LAYERS:
         </span>
         {['ALL', 'CRITICAL', 'HIGH', 'MEDIUM', 'RESOLVED'].map((filter) => (
           <button
             key={filter}
             onClick={() => setActiveFilter(filter)}
-            className={`px-3 py-1.5 rounded-xl text-xs font-mono font-semibold transition-all ${
+            className={`px-2.5 py-1 sm:px-3 sm:py-1.5 rounded-xl text-[11px] sm:text-xs font-mono font-semibold transition-all shrink-0 ${
               activeFilter === filter
                 ? 'bg-cyan-500/20 text-civic-cyan border border-cyan-500/50 shadow-glowCyan'
                 : 'text-slate-400 hover:text-white hover:bg-slate-900 border border-transparent'
@@ -127,7 +127,7 @@ export const LiveMapView: React.FC<LiveMapViewProps> = ({
         ))}
       </div>
 
-      {/* Map Legend */}
+      {/* Map Legend (Desktop) */}
       <div className="absolute bottom-6 left-6 z-[400] bg-slate-950/90 backdrop-blur-md p-3.5 rounded-2xl border border-slate-800 text-xs font-mono space-y-2 shadow-2xl hidden md:block">
         <span className="text-[10px] text-slate-500 uppercase font-bold block mb-1">
           STATUS CODING
@@ -155,7 +155,7 @@ export const LiveMapView: React.FC<LiveMapViewProps> = ({
 
       {/* Inspected Report Drawer / Card */}
       {inspectedReport && (
-        <div className="absolute top-4 right-4 bottom-4 w-96 max-w-full z-[400] animate-slide-left">
+        <div className="absolute inset-x-3 bottom-3 top-auto sm:top-4 sm:right-4 sm:bottom-4 sm:left-auto sm:w-96 max-h-[75%] sm:max-h-none z-[400] animate-slide-up sm:animate-slide-left">
           <GlassCard glow="cyan" className="h-full flex flex-col justify-between p-5 overflow-y-auto">
             <div>
               <div className="flex items-center justify-between pb-3 border-b border-slate-800">

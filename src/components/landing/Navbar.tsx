@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { AppMode } from '@/types';
-import { Shield, Sparkles, Server, PlusCircle, ArrowRight } from 'lucide-react';
+import { Server, PlusCircle, ArrowRight, Menu, X } from 'lucide-react';
 
 interface NavbarProps {
   appMode: AppMode;
@@ -17,15 +17,24 @@ export const Navbar: React.FC<NavbarProps> = ({
   onEnterDashboard,
   onOpenAwsModal,
 }) => {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
+
+  const closeMobileMenu = () => setIsMobileMenuOpen(false);
+
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-slate-800/80 bg-civic-dark/80 backdrop-blur-xl">
+    <header className="sticky top-0 z-40 w-full border-b border-slate-800/80 bg-civic-dark/90 backdrop-blur-xl">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         {/* Brand Logo */}
-        <div className="flex items-center gap-3 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-          <div className="relative flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500/20 to-orange-500/20 border border-cyan-500/40 shadow-glowCyan">
-            {/* Custom Location & AI Signal Icon */}
+        <div
+          className="flex items-center gap-2.5 sm:gap-3 cursor-pointer"
+          onClick={() => {
+            closeMobileMenu();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+        >
+          <div className="relative flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-cyan-500/20 to-orange-500/20 border border-cyan-500/40 shadow-glowCyan">
             <svg
-              className="w-5 h-5 text-civic-cyan"
+              className="w-4 h-4 sm:w-5 sm:h-5 text-civic-cyan"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -42,16 +51,16 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
           <div>
             <div className="flex items-center gap-1.5">
-              <span className="text-lg font-black tracking-tight text-white font-mono">CIVICFIX</span>
-              <span className="text-xs px-1.5 py-0.5 rounded font-mono font-bold bg-gradient-to-r from-civic-cyan to-civic-orange text-black">
+              <span className="text-base sm:text-lg font-black tracking-tight text-white font-mono">CIVICFIX</span>
+              <span className="text-[10px] sm:text-xs px-1.5 py-0.5 rounded font-mono font-bold bg-gradient-to-r from-civic-cyan to-civic-orange text-black">
                 AI
               </span>
             </div>
-            <p className="text-[10px] font-mono text-slate-400 tracking-wider">THE CITY THAT LISTENS</p>
+            <p className="text-[8px] sm:text-[10px] font-mono text-slate-400 tracking-wider">THE CITY THAT LISTENS</p>
           </div>
         </div>
 
-        {/* Navigation Links */}
+        {/* Desktop Navigation Links */}
         <nav className="hidden md:flex items-center gap-6 text-xs font-mono uppercase tracking-wider text-slate-300">
           <a href="#problem" className="hover:text-civic-cyan transition-colors">Problem</a>
           <a href="#ai-intelligence" className="hover:text-civic-cyan transition-colors">AI Vision</a>
@@ -68,8 +77,8 @@ export const Navbar: React.FC<NavbarProps> = ({
         </nav>
 
         {/* Actions & Mode Badge */}
-        <div className="flex items-center gap-3">
-          {/* Mode Pill Toggle */}
+        <div className="flex items-center gap-2 sm:gap-3">
+          {/* Mode Pill Toggle (Desktop / Tablet) */}
           <button
             onClick={onToggleMode}
             title="Toggle between Real AWS & Zero-Config Demo Mode"
@@ -89,23 +98,126 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           {/* Quick Report CTA */}
           <button
-            onClick={onOpenReportWizard}
-            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-civic-orange to-amber-500 text-slate-950 font-bold text-xs uppercase tracking-wider hover:brightness-110 shadow-glowOrange transition-all duration-200"
+            onClick={() => {
+              closeMobileMenu();
+              onOpenReportWizard();
+            }}
+            className="flex items-center gap-1.5 px-3 py-1.5 sm:px-3.5 sm:py-1.5 rounded-xl bg-gradient-to-r from-civic-orange to-amber-500 text-slate-950 font-bold text-xs uppercase tracking-wider hover:brightness-110 shadow-glowOrange transition-all duration-200"
           >
             <PlusCircle className="w-3.5 h-3.5 text-slate-950 stroke-[2.5]" />
-            <span className="hidden sm:inline">Report Issue</span>
+            <span className="inline">Report</span>
           </button>
 
-          {/* Command Center CTA */}
+          {/* Command Center CTA (Desktop) */}
           <button
-            onClick={onEnterDashboard}
-            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white font-medium text-xs font-mono transition-all"
+            onClick={() => {
+              closeMobileMenu();
+              onEnterDashboard();
+            }}
+            className="hidden sm:flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-white font-medium text-xs font-mono transition-all"
           >
             <span>Command Center</span>
             <ArrowRight className="w-3.5 h-3.5 text-civic-cyan" />
           </button>
+
+          {/* Mobile Hamburger Toggle Button */}
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className="md:hidden p-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white"
+            aria-label="Toggle Navigation Menu"
+          >
+            {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
         </div>
       </div>
+
+      {/* Mobile Slide-down Menu */}
+      {isMobileMenuOpen && (
+        <div className="md:hidden border-b border-slate-800 bg-slate-950/95 backdrop-blur-2xl px-5 py-6 space-y-4 animate-slide-down">
+          {/* Mobile Mode Pill */}
+          <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+            <span className="text-xs font-mono text-slate-400">Environment Mode:</span>
+            <button
+              onClick={onToggleMode}
+              className={`flex items-center gap-2 px-3 py-1 rounded-full border text-xs font-mono font-bold ${
+                appMode === 'REAL_AWS'
+                  ? 'bg-purple-950 border-purple-500 text-purple-300'
+                  : 'bg-cyan-950 border-cyan-500 text-cyan-300'
+              }`}
+            >
+              <span
+                className={`w-2 h-2 rounded-full ${
+                  appMode === 'REAL_AWS' ? 'bg-civic-bedrock' : 'bg-civic-cyan'
+                }`}
+              />
+              {appMode === 'REAL_AWS' ? 'AWS CONNECTED' : 'DEMO MODE: LOCAL'}
+            </button>
+          </div>
+
+          {/* Navigation Links */}
+          <nav className="flex flex-col space-y-3 text-sm font-mono uppercase tracking-wider text-slate-200">
+            <a
+              href="#problem"
+              onClick={closeMobileMenu}
+              className="hover:text-civic-cyan py-1"
+            >
+              01 • Detection Radar
+            </a>
+            <a
+              href="#ai-intelligence"
+              onClick={closeMobileMenu}
+              className="hover:text-civic-cyan py-1"
+            >
+              02 • Bedrock AI Vision
+            </a>
+            <a
+              href="#workflow"
+              onClick={closeMobileMenu}
+              className="hover:text-civic-cyan py-1"
+            >
+              03 • Cloud Serverless Flow
+            </a>
+            <a
+              href="#triage"
+              onClick={closeMobileMenu}
+              className="hover:text-civic-cyan py-1"
+            >
+              04 • Intelligent Triage
+            </a>
+            <a
+              href="#resolution"
+              onClick={closeMobileMenu}
+              className="hover:text-civic-cyan py-1"
+            >
+              05 • Resolution Proof
+            </a>
+            <button
+              onClick={() => {
+                closeMobileMenu();
+                onOpenAwsModal();
+              }}
+              className="flex items-center gap-2 text-civic-cyan py-1 text-left uppercase"
+            >
+              <Server className="w-4 h-4" />
+              AWS Architecture Stack
+            </button>
+          </nav>
+
+          {/* Mobile Launch Command Center CTA */}
+          <div className="pt-2">
+            <button
+              onClick={() => {
+                closeMobileMenu();
+                onEnterDashboard();
+              }}
+              className="w-full py-3 rounded-xl bg-gradient-to-r from-civic-cyan to-teal-400 text-slate-950 font-mono font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 shadow-glowCyan"
+            >
+              <span>Launch Command Center</span>
+              <ArrowRight className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+      )}
     </header>
   );
 };

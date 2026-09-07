@@ -86,7 +86,7 @@ export const StorySectionProblem: React.FC = () => {
         {/* Interactive Radar & Issue Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
           {/* Simulated Radar City Grid */}
-          <div className="lg:col-span-7 relative h-[420px] rounded-3xl bg-slate-950 border border-slate-800 p-6 overflow-hidden flex flex-col justify-between shadow-2xl">
+          <div className="lg:col-span-7 relative min-h-[440px] sm:h-[420px] rounded-2xl sm:rounded-3xl bg-slate-950 border border-slate-800 p-4 sm:p-6 overflow-hidden flex flex-col justify-between shadow-2xl">
             {/* Radar Scanline & Circles */}
             <div className="absolute inset-0 bg-grid-pattern opacity-30" />
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 rounded-full border border-cyan-500/20 animate-ping" />
@@ -108,7 +108,7 @@ export const StorySectionProblem: React.FC = () => {
             </div>
 
             {/* Interactive Issue Pins placed on the radar map */}
-            <div className="relative z-10 my-auto h-48 w-full flex items-center justify-around">
+            <div className="relative z-10 my-auto py-4 sm:py-0 w-full grid grid-cols-2 sm:flex sm:items-center sm:justify-around gap-6 sm:gap-2">
               {issues.map((iss, index) => {
                 const isSelected = selectedIssue === index;
                 const IconComponent = iss.icon;

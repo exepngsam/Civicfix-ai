@@ -78,12 +78,12 @@ export const ReportsListView: React.FC<ReportsListViewProps> = ({
         </div>
 
         {/* Filters */}
-        <div className="flex items-center gap-2 flex-wrap">
+        <div className="grid grid-cols-1 sm:grid-cols-3 w-full md:w-auto gap-2">
           {/* Category */}
           <select
             value={filters.category}
             onChange={(e) => setFilters({ ...filters, category: e.target.value })}
-            className="glass-input px-3 py-2 rounded-xl text-xs font-mono text-slate-200"
+            className="glass-input px-3 py-2 rounded-xl text-xs font-mono text-slate-200 w-full"
           >
             <option value="ALL">All Categories</option>
             <option value="road_damage">Road Damage</option>
@@ -98,7 +98,7 @@ export const ReportsListView: React.FC<ReportsListViewProps> = ({
           <select
             value={filters.severity}
             onChange={(e) => setFilters({ ...filters, severity: e.target.value })}
-            className="glass-input px-3 py-2 rounded-xl text-xs font-mono text-slate-200"
+            className="glass-input px-3 py-2 rounded-xl text-xs font-mono text-slate-200 w-full"
           >
             <option value="ALL">All Severities</option>
             <option value="CRITICAL">Critical (85-100)</option>
@@ -111,7 +111,7 @@ export const ReportsListView: React.FC<ReportsListViewProps> = ({
           <select
             value={filters.status}
             onChange={(e) => setFilters({ ...filters, status: e.target.value })}
-            className="glass-input px-3 py-2 rounded-xl text-xs font-mono text-slate-200"
+            className="glass-input px-3 py-2 rounded-xl text-xs font-mono text-slate-200 w-full"
           >
             <option value="ALL">All Statuses</option>
             <option value="REPORTED">Reported</option>

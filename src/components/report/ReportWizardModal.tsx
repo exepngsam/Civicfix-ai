@@ -152,18 +152,18 @@ export const ReportWizardModal: React.FC<ReportWizardModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-3 sm:p-4">
       <div
-        className="w-full max-w-2xl bg-slate-950 border border-slate-800 rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[90vh] animate-scale-in"
+        className="w-full max-w-2xl bg-slate-950 border border-slate-800 rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl flex flex-col max-h-[94vh] sm:max-h-[90vh] animate-scale-in"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="px-6 py-4 border-b border-slate-800 flex items-center justify-between bg-slate-950/80 sticky top-0 z-10">
-          <div className="flex items-center gap-3">
-            <span className="text-xs font-mono font-bold text-civic-orange bg-orange-500/10 px-2.5 py-1 rounded-lg border border-orange-500/30">
+        <div className="px-4 sm:px-6 py-3.5 sm:py-4 border-b border-slate-800 flex items-center justify-between bg-slate-950/80 sticky top-0 z-10">
+          <div className="flex items-center gap-2.5 sm:gap-3">
+            <span className="text-[11px] sm:text-xs font-mono font-bold text-civic-orange bg-orange-500/10 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-lg border border-orange-500/30">
               STEP {step} OF 5
             </span>
-            <h3 className="text-sm font-bold font-mono text-white">
+            <h3 className="text-xs sm:text-sm font-bold font-mono text-white truncate">
               {step === 1 && 'Upload Civic Evidence'}
               {step === 2 && 'Geospatial Location'}
               {step === 3 && 'Issue Description'}
@@ -181,7 +181,7 @@ export const ReportWizardModal: React.FC<ReportWizardModalProps> = ({
         </div>
 
         {/* Modal Body */}
-        <div className="p-6 overflow-y-auto flex-1">
+        <div className="p-4 sm:p-6 overflow-y-auto flex-1">
           {/* STEP 1: Upload Evidence */}
           {step === 1 && (
             <div className="space-y-5">
@@ -490,7 +490,7 @@ export const ReportWizardModal: React.FC<ReportWizardModalProps> = ({
         </div>
 
         {/* Modal Footer Controls */}
-        <div className="px-6 py-4 border-t border-slate-800 bg-slate-950/90 flex items-center justify-between sticky bottom-0 z-10">
+        <div className="px-4 sm:px-6 py-3 sm:py-4 border-t border-slate-800 bg-slate-950/90 flex items-center justify-between sticky bottom-0 z-10 gap-2">
           {step > 1 && step < 4 ? (
             <button
               onClick={() => setStep(step - 1)}

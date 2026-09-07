@@ -23,15 +23,15 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
       <div className="absolute inset-0 bg-grid-pattern opacity-40 pointer-events-none z-10" />
 
       {/* Hero Content Container */}
-      <div className="relative z-20 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-8 sm:pt-14">
+      <div className="relative z-20 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-4 sm:pt-14">
         {/* Futuristic Sub-badge */}
-        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-cyan-500/40 bg-slate-900/80 backdrop-blur-md text-civic-cyan font-mono text-xs tracking-widest uppercase mb-6 shadow-glowCyan animate-pulse-glow">
-          <Sparkles className="w-3.5 h-3.5 text-civic-orange" />
+        <div className="inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full border border-cyan-500/40 bg-slate-900/80 backdrop-blur-md text-civic-cyan font-mono text-[10px] sm:text-xs tracking-widest uppercase mb-4 sm:mb-6 shadow-glowCyan animate-pulse-glow">
+          <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-civic-orange" />
           <span>AI-POWERED CIVIC INTELLIGENCE</span>
         </div>
 
         {/* Cinematic Headline */}
-        <h1 className="text-5xl sm:text-7xl md:text-8xl font-black tracking-tight text-white font-mono leading-[1.05] drop-shadow-2xl">
+        <h1 className="text-4xl xs:text-5xl sm:text-7xl md:text-8xl font-black tracking-tight text-white font-mono leading-[1.08] drop-shadow-2xl">
           THE CITY <br />
           <span className="bg-clip-text text-transparent bg-gradient-to-r from-civic-cyan via-white to-civic-orange">
             THAT LISTENS.
@@ -39,7 +39,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         </h1>
 
         {/* Narrative Subtitle */}
-        <p className="mt-6 text-lg sm:text-2xl text-slate-300 max-w-2xl mx-auto font-light leading-relaxed">
+        <p className="mt-4 sm:mt-6 text-base sm:text-2xl text-slate-300 max-w-2xl mx-auto font-light leading-relaxed px-2">
           Report a problem. Let AI understand it. <br className="hidden sm:inline" />
           Let the right people fix it.
         </p>

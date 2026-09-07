@@ -21,38 +21,38 @@ export const LandingFooter: React.FC<LandingFooterProps> = ({
           <span>CIVIC INTELLIGENCE ARCHITECTURE</span>
         </div>
 
-        <h2 className="text-4xl sm:text-6xl font-black font-mono tracking-tight text-white leading-tight">
+        <h2 className="text-3xl sm:text-5xl md:text-6xl font-black font-mono tracking-tight text-white leading-tight">
           MAKE YOUR CITY BETTER, <br />
           <span className="bg-clip-text text-transparent bg-gradient-to-r from-civic-cyan via-white to-civic-orange">
             ONE REPORT AT A TIME.
           </span>
         </h2>
 
-        <p className="mt-6 text-base sm:text-lg text-slate-400 max-w-xl mx-auto font-light">
+        <p className="mt-6 text-sm sm:text-base md:text-lg text-slate-400 max-w-xl mx-auto font-light">
           Built for the AWS Hackathon. Experience the next generation of civic governance powered by Amazon Bedrock and serverless cloud automation.
         </p>
 
-        <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+        <div className="mt-8 sm:mt-10 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
           <button
             onClick={onEnterDashboard}
-            className="w-full sm:w-auto px-10 py-5 rounded-2xl bg-gradient-to-r from-civic-cyan via-teal-400 to-civic-cyan text-slate-950 font-black font-mono text-sm uppercase tracking-wider shadow-glowCyan hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2 group"
+            className="w-full sm:w-auto px-6 sm:px-10 py-4 sm:py-5 rounded-2xl bg-gradient-to-r from-civic-cyan via-teal-400 to-civic-cyan text-slate-950 font-black font-mono text-xs sm:text-sm uppercase tracking-wider shadow-glowCyan hover:scale-105 transition-all duration-300 flex items-center justify-center gap-2 group text-center"
           >
             <span>OPEN CIVICFIX COMMAND CENTER</span>
-            <ArrowRight className="w-4 h-4 text-slate-950 group-hover:translate-x-1 transition-transform" />
+            <ArrowRight className="w-4 h-4 text-slate-950 group-hover:translate-x-1 transition-transform shrink-0" />
           </button>
 
           <button
             onClick={onOpenAwsModal}
-            className="w-full sm:w-auto px-8 py-5 rounded-2xl bg-slate-900/90 hover:bg-slate-800 border border-slate-700 text-white font-mono text-sm uppercase tracking-wider hover:border-purple-500/50 hover:shadow-glowBedrock transition-all duration-300 flex items-center justify-center gap-2"
+            className="w-full sm:w-auto px-6 sm:px-8 py-4 sm:py-5 rounded-2xl bg-slate-900/90 hover:bg-slate-800 border border-slate-700 text-white font-mono text-xs sm:text-sm uppercase tracking-wider hover:border-purple-500/50 hover:shadow-glowBedrock transition-all duration-300 flex items-center justify-center gap-2 text-center"
           >
-            <Server className="w-4 h-4 text-purple-400" />
+            <Server className="w-4 h-4 text-purple-400 shrink-0" />
             <span>INSPECT AWS ARCHITECTURE</span>
           </button>
         </div>
 
         {/* Footer Meta & Hackathon Transparency */}
-        <div className="mt-20 pt-8 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between text-xs font-mono text-slate-500 gap-4">
-          <div className="flex items-center gap-2">
+        <div className="mt-16 sm:mt-20 pt-8 border-t border-slate-800/80 flex flex-col sm:flex-row items-center justify-between text-xs font-mono text-slate-500 gap-4 text-center sm:text-left">
+          <div className="flex flex-wrap items-center justify-center sm:justify-start gap-2">
             <span className="text-white font-bold">CIVICFIX AI</span>
             <span>•</span>
             <span>The City That Listens</span>
@@ -60,7 +60,7 @@ export const LandingFooter: React.FC<LandingFooterProps> = ({
             <span className="text-emerald-400">AWS Hackathon Edition</span>
           </div>
 
-          <div className="flex items-center gap-4 text-slate-400">
+          <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-4 text-slate-400">
             <span>Amazon Bedrock</span>
             <span>•</span>
             <span>Amazon S3</span>

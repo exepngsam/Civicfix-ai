@@ -57,19 +57,19 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-3 sm:p-4">
       <div
-        className="w-full max-w-md bg-slate-950 border border-slate-800 rounded-3xl overflow-hidden shadow-2xl animate-scale-in"
+        className="w-full max-w-md bg-slate-950 border border-slate-800 rounded-3xl overflow-hidden shadow-2xl animate-scale-in max-h-[92vh] flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="p-6 border-b border-slate-800 flex items-center justify-between">
+        <div className="p-4 sm:p-6 border-b border-slate-800 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-civic-cyan">
-              <Shield className="w-5 h-5" />
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-civic-cyan shrink-0">
+              <Shield className="w-4 h-4 sm:w-5 sm:h-5" />
             </div>
             <div>
-              <h3 className="text-base font-bold font-mono text-white">
+              <h3 className="text-sm sm:text-base font-bold font-mono text-white">
                 AMAZON COGNITO AUTH
               </h3>
               <p className="text-[10px] font-mono text-slate-400">
@@ -80,15 +80,16 @@ export const AuthModal: React.FC<AuthModalProps> = ({
 
           <button
             onClick={onClose}
-            className="text-slate-400 hover:text-white p-1 rounded-lg"
+            className="text-slate-400 hover:text-white p-1.5 rounded-lg border border-slate-800 sm:border-transparent shrink-0"
+            aria-label="Close Authentication Modal"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        <div className="p-6 space-y-6">
+        <div className="p-4 sm:p-6 space-y-5 sm:space-y-6 overflow-y-auto flex-1">
           {/* Quick Judge Login Option */}
-          <div className="p-4 rounded-2xl bg-cyan-950/30 border border-cyan-500/40 shadow-glowCyan">
+          <div className="p-3.5 sm:p-4 rounded-2xl bg-cyan-950/30 border border-cyan-500/40 shadow-glowCyan">
             <span className="text-[10px] font-mono text-civic-cyan uppercase font-bold tracking-wider block mb-2">
               ⚡ HACKATHON 1-CLICK INSTANT LOGIN
             </span>
