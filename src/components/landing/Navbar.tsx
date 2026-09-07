@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { AppMode } from '@/types';
-import { Server, PlusCircle, ArrowRight, Menu, X } from 'lucide-react';
+import { Server, PlusCircle, ArrowRight, Menu, X, Globe } from 'lucide-react';
+import { useI18n } from '@/lib/i18n';
 
 interface NavbarProps {
   appMode: AppMode;
@@ -18,6 +19,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   onOpenAwsModal,
 }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
+  const [isLangOpen, setIsLangOpen] = useState<boolean>(false);
+  const { language, setLanguage, t } = useI18n();
 
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
@@ -95,6 +98,50 @@ export const Navbar: React.FC<NavbarProps> = ({
             />
             <span>{appMode === 'REAL_AWS' ? 'AWS: CONNECTED' : 'DEMO MODE: LOCAL'}</span>
           </button>
+
+          {/* Quick Language Selector */}
+          <div className="relative">
+            <button
+              onClick={() => setIsLangOpen(!isLangOpen)}
+              className="flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white text-xs font-mono transition-colors"
+              title="Switch Language"
+            >
+              <Globe className="w-3.5 h-3.5 text-slate-400" />
+              <span className="uppercase font-bold">{language}</span>
+            </button>
+
+            {isLangOpen && (
+              <div
+                className="absolute right-0 mt-2 w-36 bg-slate-900 border border-slate-800 rounded-xl shadow-2xl p-1.5 z-50 text-xs space-y-1 animate-scale-up"
+                onClick={() => setIsLangOpen(false)}
+              >
+                <button
+                  onClick={() => setLanguage('en')}
+                  className={`w-full text-left px-2.5 py-1.5 rounded-lg font-medium transition-colors ${
+                    language === 'en' ? 'bg-cyan-500 text-slate-950 font-bold' : 'text-slate-300 hover:bg-slate-800'
+                  }`}
+                >
+                  English (EN)
+                </button>
+                <button
+                  onClick={() => setLanguage('hi')}
+                  className={`w-full text-left px-2.5 py-1.5 rounded-lg font-medium transition-colors ${
+                    language === 'hi' ? 'bg-cyan-500 text-slate-950 font-bold' : 'text-slate-300 hover:bg-slate-800'
+                  }`}
+                >
+                  हिन्दी (HI)
+                </button>
+                <button
+                  onClick={() => setLanguage('or')}
+                  className={`w-full text-left px-2.5 py-1.5 rounded-lg font-medium transition-colors ${
+                    language === 'or' ? 'bg-cyan-500 text-slate-950 font-bold' : 'text-slate-300 hover:bg-slate-800'
+                  }`}
+                >
+                  ଓଡ଼ିଆ (OR)
+                </button>
+              </div>
+            )}
+          </div>
 
           {/* Quick Report CTA */}
           <button

@@ -4,6 +4,8 @@ import { INITIAL_CIVIC_REPORTS, INITIAL_AWS_TELEMETRY } from '@/lib/mockData';
 import { APP_CONFIG } from '@/lib/config';
 import { civicAwsClient } from '@/lib/awsClient';
 import { ToastProvider, useToast } from '@/components/ui/Toast';
+import { I18nProvider } from '@/lib/i18n';
+import { runDeterministicDemo, DemoStepState } from '@/lib/demoRunner';
 
 // Landing Page Components
 import { Navbar } from '@/components/landing/Navbar';
@@ -21,6 +23,10 @@ import { TopHeader } from '@/components/dashboard/TopHeader';
 import { OverviewView } from '@/components/dashboard/OverviewView';
 import { ReportsListView } from '@/components/dashboard/ReportsListView';
 import { ReportDetailModal } from '@/components/dashboard/ReportDetailModal';
+import { AiPriorityQueueView } from '@/components/dashboard/AiPriorityQueueView';
+import { CivicHotspotsView } from '@/components/dashboard/CivicHotspotsView';
+import { LiveOperationsDrawer } from '@/components/dashboard/LiveOperationsDrawer';
+import { DemoProgressModal } from '@/components/dashboard/DemoProgressModal';
 
 // Dedicated Subsystem Views
 import { LiveMapView } from '@/components/map/LiveMapView';
@@ -28,10 +34,13 @@ import { AiCenterView } from '@/components/ai/AiCenterView';
 import { WorkflowVisualizerView } from '@/components/workflow/WorkflowVisualizerView';
 import { EvidenceIntelligenceView } from '@/components/evidence/EvidenceIntelligenceView';
 import { AnalyticsView } from '@/components/analytics/AnalyticsView';
+import { ImpactDashboardView } from '@/components/analytics/ImpactDashboardView';
 
 // Global Overlays
 import { ReportWizardModal } from '@/components/report/ReportWizardModal';
 import { AwsArchitectureModal } from '@/components/aws/AwsArchitectureModal';
+import { JudgeModeModal } from '@/components/aws/JudgeModeModal';
+import { CivicFixCopilotModal } from '@/components/ai/CivicFixCopilotModal';
 import { CommandPalette } from '@/components/ui/CommandPalette';
 import { AuthModal } from '@/components/auth/AuthModal';
 
@@ -41,7 +50,7 @@ const AppContent: React.FC = () => {
   // Root View State: 'landing' | 'dashboard'
   const [currentScreen, setCurrentScreen] = useState<'landing' | 'dashboard'>('landing');
 
-  // Dashboard Sub-View State: 'overview' | 'reports' | 'ai' | 'map' | 'workflows' | 'analytics' | 'evidence'
+  // Dashboard Sub-View State: 'overview' | 'priority' | 'hotspots' | 'reports' | 'impact' | 'ai' | 'map' | 'workflows' | 'analytics' | 'evidence'
   const [dashboardView, setDashboardView] = useState<string>('overview');
 
   // Application Mode: 'DEMO' | 'REAL_AWS'
@@ -72,6 +81,12 @@ const AppContent: React.FC = () => {
   const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState<boolean>(false);
   const [isAuthModalOpen, setIsAuthModalOpen] = useState<boolean>(false);
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState<boolean>(false);
+  const [isJudgeModeOpen, setIsJudgeModeOpen] = useState<boolean>(false);
+  const [isCopilotOpen, setIsCopilotOpen] = useState<boolean>(false);
+  const [isLiveOpsOpen, setIsLiveOpsOpen] = useState<boolean>(false);
+
+  // Demo Runner State
+  const [demoState, setDemoState] = useState<DemoStepState | null>(null);
 
   // Toggle Mode Handler
   const handleToggleMode = () => {
@@ -88,6 +103,30 @@ const AppContent: React.FC = () => {
     });
   };
 
+  // Trigger Deterministic 13-Step Hackathon Demo
+  const handleTriggerDemo = () => {
+    setCurrentScreen('dashboard');
+    setDashboardView('priority');
+    showToast({
+      title: 'Hackathon Demo Flow Initialized',
+      description: 'Executing 13-step deterministic pipeline from intake to resolution proof.',
+      type: 'info',
+    });
+
+    runDeterministicDemo(
+      (state) => {
+        setDemoState(state);
+      },
+      () => {
+        showToast({
+          title: 'Demo Complete: Problem Resolved',
+          description: 'Master incident INC-2048 closed with verified before/after proof.',
+          type: 'success',
+        });
+      }
+    );
+  };
+
   // Report Submission Handler
   const handleReportCreated = (newReport: CivicReport) => {
     setReports((prev) => [newReport, ...prev]);
@@ -95,7 +134,7 @@ const AppContent: React.FC = () => {
     // Add Telemetry Event
     const newEvent: AwsTelemetryEvent = {
       id: `evt-${Date.now()}`,
-      timestamp: 'Just now',
+      timestamp: new Date().toTimeString().split(' ')[0],
       service: 'Amazon Bedrock',
       action: 'InvokeModel (Claude 3.5 Sonnet)',
       details: `New report ${newReport.id} parsed with score ${newReport.severityScore}/100`,
@@ -110,7 +149,6 @@ const AppContent: React.FC = () => {
       type: 'success',
     });
 
-    // If on landing, prompt to open dashboard
     if (currentScreen === 'landing') {
       setTimeout(() => {
         setCurrentScreen('dashboard');
@@ -151,7 +189,7 @@ const AppContent: React.FC = () => {
     // Telemetry
     const newEvent: AwsTelemetryEvent = {
       id: `evt-${Date.now()}`,
-      timestamp: 'Just now',
+      timestamp: new Date().toTimeString().split(' ')[0],
       service: 'Amazon EventBridge',
       action: 'PutEvents (CivicFix.StatusUpdated)',
       details: `${reportId} transition to ${newStatus}`,
@@ -168,7 +206,7 @@ const AppContent: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-civic-dark text-slate-100 flex flex-col selection:bg-civic-cyan/30 selection:text-civic-cyan">
+    <div className="min-h-screen bg-civic-dark text-slate-100 flex flex-col selection:bg-cyan-500/30 selection:text-cyan-400">
       {/* SCREEN 1: CINEMATIC LANDING PAGE */}
       {currentScreen === 'landing' && (
         <main className="flex-1 flex flex-col">
@@ -224,10 +262,15 @@ const AppContent: React.FC = () => {
               onOpenReportWizard={() => setIsReportWizardOpen(true)}
               onOpenCommandPalette={() => setIsCommandPaletteOpen(true)}
               onOpenAwsModal={() => setIsAwsModalOpen(true)}
+              onOpenJudgeMode={() => setIsJudgeModeOpen(true)}
+              onOpenCopilot={() => setIsCopilotOpen(true)}
+              onTriggerDemo={handleTriggerDemo}
+              onOpenLiveOps={() => setIsLiveOpsOpen(true)}
               onBackToLanding={() => setCurrentScreen('landing')}
               onToggleMobileSidebar={() => setIsMobileSidebarOpen(!isMobileSidebarOpen)}
               appMode={appMode}
               eventCount={telemetryEvents.length}
+              reports={reports}
             />
 
             <main className="p-4 sm:p-6 md:p-8 flex-1 max-w-7xl w-full mx-auto">
@@ -237,8 +280,30 @@ const AppContent: React.FC = () => {
                   onSelectReport={setSelectedReport}
                   onNavigateToMap={() => setDashboardView('map')}
                   onNavigateToReports={() => setDashboardView('reports')}
+                  onNavigateToPriority={() => setDashboardView('priority')}
+                  onNavigateToHotspots={() => setDashboardView('hotspots')}
                   onOpenReportWizard={() => setIsReportWizardOpen(true)}
                 />
+              )}
+
+              {dashboardView === 'priority' && (
+                <AiPriorityQueueView
+                  reports={reports}
+                  onSelectReport={setSelectedReport}
+                  onOpenReportWizard={() => setIsReportWizardOpen(true)}
+                />
+              )}
+
+              {dashboardView === 'hotspots' && (
+                <CivicHotspotsView
+                  reports={reports}
+                  onSelectReport={setSelectedReport}
+                  onNavigateToMap={() => setDashboardView('map')}
+                />
+              )}
+
+              {dashboardView === 'impact' && (
+                <ImpactDashboardView />
               )}
 
               {dashboardView === 'reports' && (
@@ -300,6 +365,30 @@ const AppContent: React.FC = () => {
         onToggleMode={handleToggleMode}
       />
 
+      <JudgeModeModal
+        isOpen={isJudgeModeOpen}
+        onClose={() => setIsJudgeModeOpen(false)}
+        onTriggerDemo={handleTriggerDemo}
+      />
+
+      <CivicFixCopilotModal
+        isOpen={isCopilotOpen}
+        onClose={() => setIsCopilotOpen(false)}
+        reports={reports}
+        onSelectReport={setSelectedReport}
+      />
+
+      <LiveOperationsDrawer
+        isOpen={isLiveOpsOpen}
+        onClose={() => setIsLiveOpsOpen(false)}
+        events={telemetryEvents}
+      />
+
+      <DemoProgressModal
+        state={demoState}
+        onClose={() => setDemoState(null)}
+      />
+
       <CommandPalette
         isOpen={isCommandPaletteOpen}
         onClose={() => setIsCommandPaletteOpen(false)}
@@ -309,6 +398,10 @@ const AppContent: React.FC = () => {
         }}
         onOpenReportWizard={() => setIsReportWizardOpen(true)}
         onOpenAwsModal={() => setIsAwsModalOpen(true)}
+        onOpenJudgeMode={() => setIsJudgeModeOpen(true)}
+        onOpenCopilot={() => setIsCopilotOpen(true)}
+        onTriggerDemo={handleTriggerDemo}
+        onOpenLiveOps={() => setIsLiveOpsOpen(true)}
       />
 
       <AuthModal
@@ -330,7 +423,9 @@ const AppContent: React.FC = () => {
 export const App: React.FC = () => {
   return (
     <ToastProvider>
-      <AppContent />
+      <I18nProvider>
+        <AppContent />
+      </I18nProvider>
     </ToastProvider>
   );
 };

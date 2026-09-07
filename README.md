@@ -201,6 +201,28 @@ flowchart TB
 
 ---
 
+## 🌟 CIVICFIX AI 2.0: Intelligent Civic Response Platform
+
+CivicFix AI 2.0 elevates the application from simple complaint ingestion into an enterprise-grade civic response intelligence platform:
+
+| Innovation | Core Capability | Judge Impact |
+|---|---|---|
+| **Civic Impact Score** | Proprietary 0–100 multi-factor formula (Safety Risk, Footfall Density, Severity, Report Density, Issue Age) | Replaces chronological silos with true municipal impact triage |
+| **AI Priority Queue** | Real-time ranked queue ("URGENT ACTION") with expandable *"Why Priority 96?"* rationale | Instant explainability for municipal decision-makers |
+| **Civic Hotspots & Digital Twin** | Sector health scores (Sector 14: 72/100, Campus Gate: 84/100) with density metrics and weekly velocity trends | Macro visibility into deteriorating corridors |
+| **Predictive Civic Alerts** | Experimental velocity forecasting (e.g. *"Market Road garbage reports surged 41%"*) with genuine *"Insufficient data"* fallbacks | Prevents catastrophic failures before citizen escalation |
+| **AI Root-Cause Insights** | Correlates repetitive symptoms (e.g. 23 streetlight complaints → subterranean feeder failure in Vault 14-C) | Solves systemic causes instead of repeatedly treating symptoms |
+| **Duplicate Merge Intelligence** | Vector deduplication unifies clustered complaints into Master Incident **INC-2048** (6 reports → 1 dispatch workflow) | Eliminates duplicated contractor runs and saves municipal funds |
+| **Citizen Trust Timeline** | Public 6-stage milestone tracker (*Reported → Verified → Assigned → Field Notified → In Progress → Resolved*) | Complete civic transparency without exposing internal PII |
+| **Before / After Resolution Proof** | Interactive split-image comparison slider with inspector badge verification and timestamps | Visual accountability; issues cannot close without photographic proof |
+| **CivicFix Operations Copilot** | Grounded natural language assistant answering risk queries, SLA breaches, and department backlogs using live data | Conversational operations copilot for city administrators |
+| **Command Center (Cmd+K)** | Keyboard-driven command palette for instant search, page navigation, and diagnostic tools | Power-user speed for operations center dispatchers |
+| **Real-Time Operations Stream** | Live timestamped event bus reflecting API Gateway, Bedrock, DynamoDB, and EventBridge activity | Transparent verification of cloud telemetry |
+| **Multilingual Reporting** | Native dictionary localization supporting **English**, **Hindi (हिन्दी)**, and **Odia (ଓଡ଼ିଆ)** | Democratic, accessibility-first civic engagement |
+| **Judge Mode & Architecture Explorer** | 20-second elevator pitch, 10/10 operational AWS service health dots, and node-by-node architecture inspector | Rapid technical evaluation for hackathon judges |
+
+---
+
 ## ⚡ Live Demo & Quickstart
 
 ### Prerequisites

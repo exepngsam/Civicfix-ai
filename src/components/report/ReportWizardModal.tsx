@@ -107,6 +107,9 @@ export const ReportWizardModal: React.FC<ReportWizardModalProps> = ({
 
     const newId = `REP-${Math.floor(1000 + Math.random() * 9000)}`;
 
+    const score = Math.min(100, Math.floor(aiResult.confidenceScore * 0.98));
+    const isCritical = aiResult.confidenceScore > 90 && aiResult.estimatedRepairHours <= 4;
+
     const newReport: CivicReport = {
       id: newId,
       userId: 'usr-cit-current',
@@ -114,18 +117,57 @@ export const ReportWizardModal: React.FC<ReportWizardModalProps> = ({
       title: description.slice(0, 48) + '...',
       description,
       category,
-      severity: (aiResult.confidenceScore > 90 && aiResult.estimatedRepairHours <= 4 ? 'CRITICAL' : 'HIGH') as SeverityLevel,
-      severityScore: Math.min(100, Math.floor(aiResult.confidenceScore * 0.98)),
+      severity: (isCritical ? 'CRITICAL' : 'HIGH') as SeverityLevel,
+      severityScore: score,
       confidence: aiResult.confidenceScore,
       status: 'AI_VERIFIED',
       latitude,
       longitude,
       address,
+      zone: 'Sector 14',
       department: aiResult.targetDepartment,
+      departmentConfidence: 96,
+      humanReviewRequired: false,
       evidenceUrl: imagePreview,
       evidenceHash: 'a7b8c9d0e1f23456789abcdef0123456789abcdef0123456789abcdef0123456',
       duplicateScore: aiResult.duplicateProbability,
       similarReportsCount: Math.floor(Math.random() * 3) + 1,
+      civicImpact: {
+        safetyRisk: isCritical ? 28 : 18,
+        affectedPopulation: 22,
+        severity: Math.floor(score * 0.25),
+        reportDensity: 8,
+        issueAge: 2,
+        totalScore: Math.min(96, Math.floor(score * 0.95)),
+        level: isCritical ? 'CRITICAL' : 'HIGH',
+        modelName: 'CivicFix AI Priority Model',
+        estimatedPopulationAffected: 4800,
+      },
+      sla: {
+        targetHours: isCritical ? 4 : 24,
+        elapsedHours: 0.1,
+        remainingHours: isCritical ? 3.9 : 23.9,
+        status: 'ON_TRACK',
+        escalationContact: 'Municipal Dispatch Desk',
+      },
+      priorityRationale: {
+        rank: 5,
+        reasons: [
+          'Citizen verified report logged via mobile intake',
+          'Multimodal vision classification completed via Bedrock',
+          `Proximity to public transit route in Sector 14`,
+        ],
+        recommendedAction: aiResult.recommendedAction,
+        responsibleDepartment: aiResult.targetDepartment,
+      },
+      timeline: [
+        { step: 'SUBMITTED', label: 'Report Submitted', timestamp: 'Just now', completed: true },
+        { step: 'AI_VERIFIED', label: 'AI Computer Vision & Severity Scored', timestamp: 'Just now', completed: true, current: true },
+        { step: 'DEPARTMENT_ASSIGNED', label: 'Queued to Department', timestamp: 'Pending', completed: false },
+        { step: 'FIELD_NOTIFIED', label: 'Field Team Alerted', timestamp: 'Pending', completed: false },
+        { step: 'IN_PROGRESS', label: 'Repair in Progress', timestamp: 'Pending', completed: false },
+        { step: 'RESOLVED', label: 'Evidence Verified', timestamp: 'Pending', completed: false },
+      ],
       aiAnalysis: aiResult,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
@@ -404,10 +446,46 @@ export const ReportWizardModal: React.FC<ReportWizardModalProps> = ({
                 </h4>
               </div>
 
+              {/* Contextual Progressive Loading Steps (Section 75) */}
+              <div className="w-full max-w-sm bg-slate-900/80 border border-slate-800 rounded-xl p-3.5 space-y-2 text-left font-mono text-xs">
+                <div className="flex items-center justify-between text-[10px] text-slate-400 font-bold uppercase border-b border-slate-800 pb-1.5 mb-1.5">
+                  <span>AI PIPELINE EXECUTION</span>
+                  <span className="text-cyan-400">{aiProgress}%</span>
+                </div>
+                <div className="flex items-center justify-between text-slate-300">
+                  <span>01 Evidence received</span>
+                  <span className="text-emerald-400 font-bold">✓</span>
+                </div>
+                <div className="flex items-center justify-between text-slate-300">
+                  <span>02 Vision analysis (Bedrock)</span>
+                  <span className={aiProgress >= 30 ? "text-emerald-400 font-bold" : "text-cyan-400 animate-pulse"}>
+                    {aiProgress >= 30 ? "✓" : "●"}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between text-slate-300">
+                  <span>03 Severity calculation</span>
+                  <span className={aiProgress >= 60 ? "text-emerald-400 font-bold" : aiProgress >= 30 ? "text-cyan-400 animate-pulse" : "text-slate-600"}>
+                    {aiProgress >= 60 ? "✓" : aiProgress >= 30 ? "●" : "○"}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between text-slate-300">
+                  <span>04 Duplicate search (OpenSearch)</span>
+                  <span className={aiProgress >= 85 ? "text-emerald-400 font-bold" : aiProgress >= 60 ? "text-cyan-400 animate-pulse" : "text-slate-600"}>
+                    {aiProgress >= 85 ? "✓" : aiProgress >= 60 ? "●" : "○"}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between text-slate-300">
+                  <span>05 Department routing</span>
+                  <span className={aiProgress >= 95 ? "text-emerald-400 font-bold" : aiProgress >= 85 ? "text-cyan-400 animate-pulse" : "text-slate-600"}>
+                    {aiProgress >= 95 ? "✓" : aiProgress >= 85 ? "●" : "○"}
+                  </span>
+                </div>
+              </div>
+
               {/* Progress Bar */}
               <div className="w-full max-w-md h-2 rounded-full bg-slate-800 overflow-hidden">
                 <div
-                  className="h-full bg-gradient-to-r from-cyan-500 via-purple-500 to-civic-orange transition-all duration-300 rounded-full"
+                  className="h-full bg-gradient-to-r from-cyan-500 via-purple-500 to-emerald-400 transition-all duration-300 rounded-full"
                   style={{ width: `${aiProgress}%` }}
                 />
               </div>

@@ -10,8 +10,12 @@ import {
   Server,
   LogOut,
   X,
+  Flame,
+  MapPin,
+  Award,
 } from 'lucide-react';
 import { AppMode, UserSession } from '@/types';
+import { useI18n } from '@/lib/i18n';
 
 interface SidebarProps {
   currentView: string;
@@ -38,14 +42,18 @@ export const Sidebar: React.FC<SidebarProps> = ({
   isMobileOpen = false,
   onCloseMobile,
 }) => {
+  const { t } = useI18n();
+
   const menuItems = [
-    { id: 'overview', label: 'Overview', icon: LayoutDashboard },
-    { id: 'reports', label: 'Reports', icon: FileText, badge: '8' },
+    { id: 'overview', label: t.overview || 'Overview', icon: LayoutDashboard },
+    { id: 'priority', label: t.aiPriorityQueue || 'AI Priority Queue', icon: Flame, badge: 'URGENT', badgeColor: 'text-rose-400 bg-rose-500/10 border-rose-500/30' },
+    { id: 'hotspots', label: t.hotspotsAndTwin || 'Hotspots & Twin', icon: MapPin, badge: 'HOT', badgeColor: 'text-amber-400 bg-amber-500/10 border-amber-500/30' },
+    { id: 'reports', label: t.allReports || 'Reports Registry', icon: FileText, badge: '32' },
+    { id: 'impact', label: t.impactDashboard || 'Impact & ROI', icon: Award },
+    { id: 'map', label: t.liveMap || 'Geospatial Map', icon: Map },
     { id: 'ai', label: 'AI Center', icon: Cpu, highlight: true },
-    { id: 'map', label: 'Live Map', icon: Map },
-    { id: 'workflows', label: 'Workflows', icon: Network },
-    { id: 'analytics', label: 'Analytics', icon: BarChart3 },
-    { id: 'evidence', label: 'Evidence', icon: ShieldCheck },
+    { id: 'workflows', label: t.workflows || 'Workflows', icon: Network },
+    { id: 'evidence', label: t.evidenceVault || 'Evidence', icon: ShieldCheck },
   ];
 
   const handleSelect = (id: string) => {
@@ -56,7 +64,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const sidebarContent = (
     <aside className="w-64 bg-slate-950 border-r border-slate-800/80 flex flex-col justify-between h-full select-none">
       {/* Top Header */}
-      <div>
+      <div className="overflow-y-auto">
         {/* Brand Header */}
         <div className="p-4 sm:p-5 border-b border-slate-800/80 flex items-center justify-between">
           <div
@@ -83,11 +91,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
             <div>
               <div className="flex items-center gap-1.5">
                 <span className="text-base font-black tracking-tight text-white font-mono">CIVICFIX</span>
-                <span className="text-[10px] px-1 py-0.2 rounded font-mono font-bold bg-civic-cyan text-black">
-                  AI
+                <span className="text-[10px] px-1 py-0.2 rounded font-mono font-bold bg-cyan-500 text-black">
+                  2.0
                 </span>
               </div>
-              <p className="text-[9px] font-mono text-slate-400">COMMAND CENTER</p>
+              <p className="text-[9px] font-mono text-slate-400">INTELLIGENT RESPONSE</p>
             </div>
           </div>
 
@@ -114,33 +122,37 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 onClick={() => handleSelect(item.id)}
                 className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-mono transition-all group duration-200 ${
                   isActive
-                    ? 'bg-gradient-to-r from-cyan-500/15 via-cyan-500/5 to-transparent text-white border-l-2 border-civic-cyan font-bold shadow-glowCyan'
+                    ? 'bg-gradient-to-r from-cyan-500/15 via-cyan-500/5 to-transparent text-white border-l-2 border-cyan-400 font-bold shadow-sm'
                     : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/80 hover:translate-x-0.5 border-l-2 border-transparent'
                 }`}
               >
                 <div className="flex items-center gap-3">
                   <Icon
                     className={`w-4 h-4 transition-colors ${
-                      isActive ? 'text-civic-cyan' : 'text-slate-500 group-hover:text-slate-300'
+                      isActive ? 'text-cyan-400' : 'text-slate-500 group-hover:text-slate-300'
                     }`}
                   />
                   <span>{item.label}</span>
                 </div>
 
                 {item.badge && (
-                  <span className="px-2 py-0.5 rounded-full text-[10px] bg-slate-900 border border-slate-800 text-slate-300 font-mono font-semibold">
+                  <span
+                    className={`px-1.5 py-0.5 rounded-full text-[9px] font-mono font-bold border ${
+                      item.badgeColor || 'bg-slate-900 border-slate-800 text-slate-300'
+                    }`}
+                  >
                     {item.badge}
                   </span>
                 )}
                 {item.highlight && (
-                  <span className="w-1.5 h-1.5 rounded-full bg-civic-bedrock animate-pulse" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-purple-400 animate-pulse" />
                 )}
               </button>
             );
           })}
         </nav>
 
-        {/* Live Municipal Pulse & Telemetry (Fills vertical void with high-value info) */}
+        {/* Live Municipal Pulse & Telemetry */}
         <div className="px-4 py-3 mx-3 my-2 rounded-2xl bg-slate-900/60 border border-slate-800/80 space-y-2.5">
           <div className="flex items-center justify-between">
             <span className="text-[10px] font-mono uppercase text-slate-400 font-bold tracking-wider flex items-center gap-1.5">
@@ -168,7 +180,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       </div>
 
       {/* Bottom Section: AWS Status & User Session */}
-      <div className="p-4 border-t border-slate-800/80 space-y-3">
+      <div className="p-4 border-t border-slate-800/80 space-y-3 shrink-0">
         {/* AWS Architecture & Mode Pill */}
         <div
           onClick={() => {
@@ -179,7 +191,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         >
           <div className="flex items-center justify-between text-xs font-mono">
             <span className="text-slate-400 flex items-center gap-1.5">
-              <Server className="w-3.5 h-3.5 text-civic-bedrock" />
+              <Server className="w-3.5 h-3.5 text-purple-400" />
               AWS Stack
             </span>
             <button
@@ -187,7 +199,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 e.stopPropagation();
                 onToggleMode();
               }}
-              className="text-[10px] text-civic-cyan hover:underline"
+              className="text-[10px] text-cyan-400 hover:underline"
             >
               Toggle
             </button>
@@ -196,7 +208,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           <div className="mt-2 flex items-center gap-2">
             <span
               className={`w-2 h-2 rounded-full ${
-                appMode === 'REAL_AWS' ? 'bg-civic-bedrock animate-ping' : 'bg-civic-cyan animate-pulse'
+                appMode === 'REAL_AWS' ? 'bg-purple-500 animate-ping' : 'bg-cyan-400 animate-pulse'
               }`}
             />
             <span className="text-xs font-mono font-semibold text-white">
@@ -204,7 +216,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             </span>
           </div>
           <p className="text-[10px] text-slate-400 font-mono mt-0.5">
-            {appMode === 'REAL_AWS' ? 'Bedrock • DynamoDB • S3' : 'Simulated Latency & Events'}
+            {appMode === 'REAL_AWS' ? 'Bedrock • DynamoDB • S3' : 'Deterministic 13-Step Flow'}
           </p>
         </div>
 
